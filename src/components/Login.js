@@ -29,14 +29,11 @@ class Login extends React.Component {
       .signInWithEmailAndPassword(this.state.username, this.state.password)
       .then(() => {
         this.setState(() => ({
-            toSelection: true
-          }));
+          toSelection: true
+        }));
+        this.props.setUser();
       })
       .catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
         alert("No estás registrada o tus datos son incorrectos");
       });
   };
@@ -79,7 +76,8 @@ class Login extends React.Component {
               type="button"
               className="btn btn-light"
               onClick={this.handleLogin}
-              value="Login" />
+              value="Login"
+            />
           </form>
         </div>
       </div>
