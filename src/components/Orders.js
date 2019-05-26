@@ -12,7 +12,8 @@ class Orders extends React.Component {
     this.state = {
       menu: [],
       showMenuFilter: "breakfast",
-      orderList: []
+      orderList: [],
+      orderName: ""
     };
   }
 
@@ -32,6 +33,15 @@ class Orders extends React.Component {
         this.setState({ menu });
       });
   }
+  handleInput = e => {
+    const { value, name } = e.target;
+    this.setState({
+      [name]: value
+    });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+  };
 
   navChange = type => {
     this.setState({ showMenuFilter: type });
@@ -41,7 +51,17 @@ class Orders extends React.Component {
     let list = Array.from(this.state.orderList);
     list.push(mi);
     this.setState({ orderList: list });
-    console.log(list)
+  };
+
+  deleteItem = index => {
+    let orders = Array.from(this.state.orderList);
+    let indexToRemove = index;
+    let newArray = orders.slice(0, indexToRemove);
+    let newArray2 = orders.slice(indexToRemove, orders.length);
+    newArray2.shift();
+
+    let newOrders = [...newArray, ...newArray2];
+    this.setState({ orderList: newOrders });
   };
 
   render() {
@@ -67,7 +87,11 @@ class Orders extends React.Component {
               <Nav.Item />
             </Nav>
           </Card.Header>
-          <OrderName />
+          <OrderName
+            handleInput={this.handleInput}
+            msg={this.state.orderName}
+          />
+
           <div className="meal">
             {this.state.menu
               .filter(mi => mi.type === this.state.showMenuFilter)
@@ -82,19 +106,23 @@ class Orders extends React.Component {
           </div>
           <div className="card">
             <ul>
-               {this.state.orderList.map((li, i) =>(
-                 <li key={i}>{li.name} {"$" + li.price}</li>
-               ))}
+              <h1>{this.state.orderName}</h1>
+              {this.state.orderList.map((orderItem, i) => (
+                <li key={i} >
+                  {orderItem.name} {"$" + orderItem.price}{" "}
+                  <a href="#" onClick={() => this.deleteItem(i)}>
+                    <i className="far fa-times-circle fa-2x" />
+                  </a>
+                </li>
+              ))}
             </ul>
-          
-          </div>      
+          </div>
 
           <Card.Body>
             <Card.Text />
             <Button variant="primary">Crear pedido</Button>
           </Card.Body>
         </Card>
-        
       </div>
     );
   }

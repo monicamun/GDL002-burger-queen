@@ -3,23 +3,26 @@ import React from "react";
 class OrderName extends React.Component {
   constructor() {
     super();
-this.state = {
-    orderName : "",
-}
+    this.state = {};
   }
   render() {
     return (
       <div>
         <div className="form-group">
-              <label htmlFor="ordername">Nombre del cliente: </label>
+          <form >
+            <label htmlFor="ordername">Nombre del cliente: </label>
+            <div>
               <input
-                className="form-control"
                 type="text"
-                name="ordername"
-                value={this.state.ordername}
-                onChange={this.handleInput}
+                name="orderName"
+                onChange={this.props.handleInput}
+                value={this.props.msg}
+               
               />
+
             </div>
+          </form>
+        </div>
       </div>
     );
   }
