@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import OrderName from "./OrderName";
+import CreateOrderModal from "./CreateOrderModal";
 
 class Orders extends React.Component {
   constructor() {
@@ -16,7 +17,13 @@ class Orders extends React.Component {
       orderName: ""
     };
   }
-  // {orderItems, orderName}
+
+  createNewOrder = () => {
+    this.props.addNewOrder({
+      orderItems: this.state.orderItems,
+      orderName: this.state.orderName
+    });
+  };
 
   componentDidMount() {
     firebase
@@ -129,19 +136,19 @@ class Orders extends React.Component {
 
           <Card.Body>
             <Card.Text />
-            <Button
+            <input
+              type="button"
               variant="secondary"
-              onClick={() =>
-                this.props.addNewOrder({
-                  orderItems: this.state.orderItems,
-                  orderName: this.state.orderName
-                })
-              }
+              onClick={this.createNewOrder}
+              value="Crear pedido"
             >
-              Crear pedido
-            </Button>
+            </input>
           </Card.Body>
         </Card>
+        <CreateOrderModal
+          show={this.props.orderModalShow}
+          onHide={this.props.closeOrderModal}
+        />
       </div>
     );
   }

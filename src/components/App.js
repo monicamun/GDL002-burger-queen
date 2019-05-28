@@ -15,14 +15,19 @@ class App extends React.Component {
     let user = firebase.auth().currentUser;
     this.state = {
       user,
-      ordersList: []
+      ordersList: [],
+      orderModalShow: false
     };
   }
 
   addNewOrder = order => {
     let newOrdersList = Array.from(this.state.ordersList);
     newOrdersList.push(order);
-    this.setState({ ordersList: newOrdersList });
+    this.setState({ ordersList: newOrdersList, orderModalShow: true });
+  };
+
+  closeOrderModal = () => {
+    this.setState({ orderModalShow: false });
   };
 
   setUser = () => {
@@ -50,7 +55,13 @@ class App extends React.Component {
                   <Route path="/selection" component={ActivitySelection} />
                   <Route
                     path="/orders"
-                    component={() => <Orders addNewOrder={this.addNewOrder} />}
+                    component={() => (
+                      <Orders
+                        addNewOrder={this.addNewOrder}
+                        orderModalShow={this.state.orderModalShow}
+                        closeOrderModal={this.closeOrderModal}
+                      />
+                    )}
                   />
                   <Route
                     path="/kitchen"
