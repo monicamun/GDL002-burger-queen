@@ -2,7 +2,7 @@
   "name": "gdl002-burger-queen",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://monicamun.github.io/GDL002-burguer-queen",
+  "homepage": "https://monicamun.github.io/GDL002-burger-queen",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "firebase": "^6.0.2",
