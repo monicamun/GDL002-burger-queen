@@ -14,9 +14,16 @@ class App extends React.Component {
     super();
     let user = firebase.auth().currentUser;
     this.state = {
-      user
+      user,
+      ordersList: []
     };
   }
+
+  addNewOrder = order => {
+    let newOrdersList = Array.from(this.state.ordersList);
+    newOrdersList.push(order);
+    this.setState({ ordersList: newOrdersList });
+  };
 
   setUser = () => {
     let user = firebase.auth().currentUser;
@@ -26,12 +33,12 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Navigation user={this.state.user} setUser={this.setUser} />
-        <div className="container">
-          <div className="row">&nbsp;</div>
-          <div className="row d-flex justify-content-center">
-            <div className="col-md">
-              <Router>
+        <Router>
+          <Navigation user={this.state.user} setUser={this.setUser} />
+          <div className="container">
+            <div className="row">&nbsp;</div>
+            <div className="row d-flex justify-content-center">
+              <div className="col-md">
                 <div>
                   <Route
                     exact
@@ -41,13 +48,21 @@ class App extends React.Component {
                     )}
                   />
                   <Route path="/selection" component={ActivitySelection} />
-                  <Route path="/orders" component={Orders} />
-                  <Route path="/kitchen" component={Kitchen} />
+                  <Route
+                    path="/orders"
+                    component={() => <Orders addNewOrder={this.addNewOrder} />}
+                  />
+                  <Route
+                    path="/kitchen"
+                    component={() => (
+                      <Kitchen ordersList={this.state.ordersList} />
+                    )}
+                  />
                 </div>
-              </Router>
+              </div>
             </div>
           </div>
-        </div>
+        </Router>
       </div>
     );
   }

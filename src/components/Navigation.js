@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import firebase from "firebase";
 import "firebase/auth";
 import { Redirect } from "react-router-dom";
+import {withRouter} from 'react-router-dom'
 
 class Navigation extends React.Component {
   constructor() {
@@ -30,8 +31,8 @@ class Navigation extends React.Component {
           <Navbar.Brand href="#home">Burguer Queen</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="/orders">Ordenes</Nav.Link>
-            <Nav.Link href="/kitchen">Cocina</Nav.Link>
+            <Nav.Link href="" onClick={() => this.props.history.push('/orders')}>Ordenes</Nav.Link>
+            <Nav.Link href="" onClick={() => this.props.history.push('/kitchen')}>Cocina</Nav.Link>
           </Nav>
           {this.props.user ? (
             <Nav>
@@ -47,4 +48,4 @@ class Navigation extends React.Component {
     );
   }
 }
-export default Navigation;
+export default withRouter(Navigation);

@@ -9,10 +9,10 @@ class OrderName extends React.Component {
     return (
       <div>
         <div className="form-group">
-          <form >
+          <form onSubmit={e => { e.preventDefault(); }} >
             <label htmlFor="ordername">Nombre del cliente: </label>
-            <div>
-              <input
+            <div className="col">
+              <input className="form-control"  placeholder="Cliente"
                 type="text"
                 name="orderName"
                 onChange={this.props.handleInput}

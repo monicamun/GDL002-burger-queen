@@ -12,10 +12,11 @@ class Orders extends React.Component {
     this.state = {
       menu: [],
       showMenuFilter: "breakfast",
-      orderList: [],
+      orderItems: [],
       orderName: ""
     };
   }
+  // {orderItems, orderName}
 
   componentDidMount() {
     firebase
@@ -39,29 +40,26 @@ class Orders extends React.Component {
       [name]: value
     });
   };
-  handleSubmit = e => {
-    e.preventDefault();
-  };
 
   navChange = type => {
     this.setState({ showMenuFilter: type });
   };
 
   addToOrder = mi => {
-    let list = Array.from(this.state.orderList);
+    let list = Array.from(this.state.orderItems);
     list.push(mi);
-    this.setState({ orderList: list });
+    this.setState({ orderItems: list });
   };
 
   deleteItem = index => {
-    let orders = Array.from(this.state.orderList);
+    let orders = Array.from(this.state.orderItems);
     let indexToRemove = index;
     let newArray = orders.slice(0, indexToRemove);
     let newArray2 = orders.slice(indexToRemove, orders.length);
     newArray2.shift();
 
     let newOrders = [...newArray, ...newArray2];
-    this.setState({ orderList: newOrders });
+    this.setState({ orderItems: newOrders });
   };
 
   render() {
@@ -97,6 +95,7 @@ class Orders extends React.Component {
               .filter(mi => mi.type === this.state.showMenuFilter)
               .map((mi, i) => (
                 <input
+                  className="btn btn-outline-secondary m-1"
                   type="button"
                   onClick={() => this.addToOrder(mi)}
                   key={i}
@@ -104,11 +103,11 @@ class Orders extends React.Component {
                 />
               ))}
           </div>
-          <div className="card">
-            <ul>
-              <h1>{this.state.orderName}</h1>
-              {this.state.orderList.map((orderItem, i) => (
-                <li key={i} >
+          <div className="">
+            <ul className="list-group">
+              <h1 className="mx-auto">{this.state.orderName}</h1>
+              {this.state.orderItems.map((orderItem, i) => (
+                <li className="list-group-item m-2" key={i}>
                   {orderItem.name} {"$" + orderItem.price}{" "}
                   <a href="#" onClick={() => this.deleteItem(i)}>
                     <i className="far fa-times-circle fa-2x" />
@@ -117,10 +116,30 @@ class Orders extends React.Component {
               ))}
             </ul>
           </div>
+          <div>
+            <h3>
+              Total $
+              {this.state.orderItems.length !== 0
+                ? this.state.orderItems
+                    .map(orderItem => orderItem.price)
+                    .reduce((item1, item2) => +item1 + item2)
+                : 0}
+            </h3>
+          </div>
 
           <Card.Body>
             <Card.Text />
-            <Button variant="primary">Crear pedido</Button>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                this.props.addNewOrder({
+                  orderItems: this.state.orderItems,
+                  orderName: this.state.orderName
+                })
+              }
+            >
+              Crear pedido
+            </Button>
           </Card.Body>
         </Card>
       </div>
